@@ -11,7 +11,7 @@ OBJ_DIR = $(BUILD)/objects
 APP_DIR = $(BUILD)/apps
 
 TARGET = parser
-SRC = $(wildcard src/*.cpp)
+SRC = $(wildcard *.cpp)
 OBJECTS  = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 DEPENDENCIES = $(OBJECTS:.o=.d)
 

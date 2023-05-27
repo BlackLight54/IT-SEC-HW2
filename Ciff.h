@@ -44,7 +44,13 @@ public:
             height_(height_),
             caption_(std::move(caption_)),
             tags_(std::move(tags_)),
-            pixels_(std::move(pixels_)) {}
+            pixels_(std::move(pixels_)) {
+
+        // validate content size with height and width
+        if (content_size_ != width_ * height_ * 3) {
+            throw std::runtime_error("Invalid content size");
+        }
+    }
 
     // getters
     [[nodiscard]] auto magic() const -> const std::string & { return magic_; }
@@ -63,20 +69,20 @@ public:
 
     [[nodiscard]] auto pixels() const -> const std::vector<Pixel> & { return pixels_; }
 
-    //override << operator
     friend std::ostream &operator<<(std::ostream &os, const Ciff &ciff) {
-        os << "MAGIC: " << ciff.magic_ << std::endl;
+        os << "--CIFF--" << std::endl;
+        os << "MAGIC: \"" << ciff.magic_ << "\"" << std::endl;
         os << "HEADER_SIZE: " << ciff.header_size_ << std::endl;
         os << "CONTENT_SIZE: " << ciff.content_size_ << std::endl;
         os << "WIDTH: " << ciff.width_ << std::endl;
         os << "HEIGHT: " << ciff.height_ << std::endl;
         os << "CAPTION: " << ciff.caption_ << std::endl;
         os << "TAG_CNT: " << ciff.tags_.size() << std::endl;
-//        os << "TAGS: ";
-//        for (const auto &tag : ciff.tags_) {
-//            os << tag << " ";
-//        }
-//        os << std::endl;
+        os << "TAGS: ";
+        for (const auto &tag : ciff.tags_) {
+            os << tag << " ";
+        }
+        os << std::endl;
         os << "PIXEL_CNT: " << ciff.pixels_.size() << std::endl;
 //        os << "PIXELS: ";
 //        for (const auto &pixel : ciff.pixels_) {
@@ -85,6 +91,11 @@ public:
         os << std::endl;
         return os;
     }
+
+    //ctor with all fields
+
+
+
 };
 
 

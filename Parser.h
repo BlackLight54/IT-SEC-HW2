@@ -17,7 +17,7 @@
 using namespace std;
 namespace Parser {
 
-    CaffBlock parseCaffBlock(ifstream &file);
+    CaffBlock *parseCaffBlock(ifstream &file);
 
     CaffHeader parseCaffHeader(ifstream &file, unsigned long dataLength);
 

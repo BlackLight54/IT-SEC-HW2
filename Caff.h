@@ -22,9 +22,10 @@ public:
 
     static CaffBlock &parseBlock(std::ifstream &file);
 
+    virtual void print(ostream &os) const;;
+
     friend ostream &operator<<(ostream &os, const CaffBlock &block) {
-        os << "TYPE: " << to_string(block.type_) << endl;
-        os << "DATA_LENGTH: " << block.length_ << endl;
+        block.print(os);
         return os;
     }
 };
@@ -43,10 +44,18 @@ public:
         type_ = 0x1;
         length_ = dataLength;
 
-        if (magic != "CAFF") { throw runtime_error("Invalid CAFF magic"); }
-        if (dataLength <= 9) { throw runtime_error("CAFF block length too short"); }
-        if (headerSize != dataLength) { throw runtime_error("Invalid CAFF header size"); }
+//        if (magic != "CAFF") { throw runtime_error("Invalid CAFF magic"); }
+//        if (dataLength <= 9) { throw runtime_error("CAFF block length too short"); }
+//        if (headerSize != dataLength) { throw runtime_error("Invalid CAFF header size"); }
 
+
+    }
+
+    CaffHeader(const CaffHeader &other) : magic_(other.magic_),
+                                          headerSize_(other.headerSize_),
+                                          numAnim_(other.numAnim_) {
+        type_ = other.type_;
+        length_ = other.length_;
     }
 
     //getters
@@ -56,9 +65,9 @@ public:
 
     [[nodiscard]] auto numAnim() const -> const unsigned long & { return numAnim_; }
 
-    static CaffHeader &parseData(ifstream &file, unsigned long int length);
+    static CaffHeader parseData(ifstream &file, unsigned long int length);
 
-    friend ostream &operator<<(ostream &os, const CaffHeader &header);
+    void print(ostream &os) const override;
 
 
 };
@@ -90,11 +99,12 @@ public:
         length_ = dataLength;
 
         //data validation
-        if (month < 1 || month > 12) throw runtime_error("Invalid CAFF month");
-        if (day < 1 || day > 31) throw runtime_error("Invalid CAFF day");
-        if (hour < 0 || hour > 23) throw runtime_error("Invalid CAFF hour");
-        if (minute < 0 || minute > 59) throw runtime_error("Invalid CAFF minute");
-        if (creator_length > dataLength - 14) throw runtime_error("Invalid CAFF creator length");
+        if (month < 1 || month > 12) throw runtime_error("Invalid CAFF month: " + to_string(month) + "");
+        if (day < 1 || day > 31) throw runtime_error("Invalid CAFF day: " + to_string(day) + "");
+        if (hour < 0 || hour > 23) throw runtime_error("Invalid CAFF hour: " + to_string(hour) + "");
+        if (minute < 0 || minute > 59) throw runtime_error("Invalid CAFF minute: " + to_string(minute) + "");
+        if (creator_length > dataLength - 14) throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + "");
+        if (creator_length != creator_.length()) throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + " != " + to_string(creator_.length()) + "");
     }
 
     auto &year() const { return year_; }
@@ -112,9 +122,10 @@ public:
     auto &creator() const { return creator_; }
 
 
-    static CaffCredits &parseData(ifstream &file, unsigned long int length);
+    static CaffCredits parseData(ifstream &file, unsigned long int length);
 
-    friend ostream &operator<<(ostream &os, const CaffCredits &credits);
+    void print(ostream &os) const override;
+
 };
 
 class CaffAnimation : public CaffBlock {
@@ -128,19 +139,11 @@ public:
         type_ = 0x3;
         length_ = dataLength;
     }
+
     static CaffAnimation parseData(ifstream &file, unsigned long int length, unsigned long num_anim);
 
-    // << operator
-friend ostream &operator<<(ostream &os, const CaffAnimation &animation) {
-        os << "-----ANIMATION-----" << endl;
-        os << (CaffBlock &) animation;
-        os << "DURATION: " << animation.duration << endl;
-//        os << "CIFFS: " << endl;
-//        for (auto &ciff : animation.ciffs) {
-//            os << ciff;
-//        }
-        return os;
-    }
+    void print(ostream &os) const override;
+
 };
 
 class Caff {
