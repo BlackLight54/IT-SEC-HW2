@@ -5,8 +5,8 @@
 #include "Caff.h"
 #include "Parser.h"
 
-CaffBlock &CaffBlock::parseBlock(std::ifstream &file) {
-    return *Parser::parseCaffBlock(file);
+CaffBlock * CaffBlock::parseBlock(std::ifstream &file) {
+    return Parser::parseCaffBlock(file);
 }
 
 CaffHeader CaffHeader::parseData(ifstream &file, unsigned long int dataLength) {

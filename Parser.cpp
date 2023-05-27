@@ -24,12 +24,10 @@ CaffBlock *Parser::parseCaffBlock(ifstream &file) {
         auto anim = parseCaffAnimation(file, length);
         block = new CaffAnimation(anim);
     } else { throw runtime_error("Invalid CAFF block type"); }
-    cout << *block << endl;
 
 
     int dataEnd = file.tellg();
     if (dataEnd - dataStart != length) { throw runtime_error("CAFF block length too long"); }
-
 
     return block;
 }

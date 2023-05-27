@@ -27,9 +27,11 @@ int main(int argc, char *argv[]) {
         return -1;
     }
     try {
-        Parser::parseCaffBlock(file);
-        Parser::parseCaffBlock(file);
-        Parser::parseCaffBlock(file);
+        // parse blocks
+        Caff caffFile(file);
+        for (auto &block : caffFile.blocks) {
+            cout << *block << endl;
+        }
     }
     catch (exception &e) {
         cout << e.what() << endl;

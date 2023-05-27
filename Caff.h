@@ -20,7 +20,7 @@ public:
 
     auto &length() const { return length_; }
 
-    static CaffBlock &parseBlock(std::ifstream &file);
+    static CaffBlock * parseBlock(std::ifstream &file);
 
     virtual void print(ostream &os) const;;
 
@@ -148,10 +148,10 @@ public:
 
 class Caff {
 public:
-    std::vector<std::reference_wrapper<CaffBlock>> blocks;
+    std::vector<CaffBlock*> blocks;
 
     explicit Caff(ifstream &file) {
-        for (int i = 0; i < 3; i++) {
+        while (!file.eof() && file.peek() != EOF) {
             blocks.push_back(CaffBlock::parseBlock(file));
         }
 

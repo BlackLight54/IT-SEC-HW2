@@ -8,7 +8,7 @@ LDFLAGS = # -ljpeg
 
 BUILD = ./build
 OBJ_DIR = $(BUILD)/objects
-APP_DIR = $(BUILD)/apps
+APP_DIR = .
 
 TARGET = parser
 SRC = $(wildcard *.cpp)
