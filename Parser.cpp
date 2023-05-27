@@ -54,9 +54,6 @@ CaffHeader Parser::parseCaffHeader(ifstream &file, unsigned long dataLength) {
     // Read num anim
     file.read((char *) &num_anim, 8);
 
-
-
-
     // return header
     return {dataLength, magic, header_size, num_anim};
 }
@@ -93,16 +90,7 @@ CaffCredits Parser::parseCaffCredits(ifstream &file, unsigned long length) {
     }
 
     // return credits
-    return {
-            length,
-            year,
-            month,
-            day,
-            hour,
-            minute,
-            creator_length,
-            creator
-    };
+    return {length, year, month, day, hour, minute, creator_length, creator};
 }
 
 CaffAnimation Parser::parseCaffAnimation(ifstream &file, unsigned long length) {
@@ -122,13 +110,8 @@ CaffAnimation Parser::parseCaffAnimation(ifstream &file, unsigned long length) {
         frames.push_back(ciff);
     }
 
-
     // return animation
-    return {
-            length,
-            duration,
-            frames
-    };
+    return {length, duration, frames};
 }
 
 Ciff Parser::parseCiff(ifstream &file) {
@@ -158,12 +141,12 @@ Ciff Parser::parseCiff(ifstream &file) {
 
     // read caption
     char cc;
-    while (cc != '\n') {
+    do {
         file.read(&cc, 1);
         bytesRead++;
         caption += cc;
         if (bytesRead > header_size) { throw runtime_error("Invalid header size"); }
-    }
+    } while (cc != '\n');
 
     //read tags
     char c;
@@ -197,16 +180,6 @@ Ciff Parser::parseCiff(ifstream &file) {
     }
 
     // validate pixel count
-
-    return {
-            magic,
-            header_size,
-            content_size,
-            width,
-            height,
-            caption,
-            tags,
-            pixels
-    };
+    return {magic, header_size, content_size, width, height, caption, tags, pixels};
 
 }

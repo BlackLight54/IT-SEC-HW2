@@ -92,10 +92,10 @@ public:
         return os;
     }
 
-    //ctor with all fields
 
 
-
+public:
+    bool writeJpeg(std::string filename) const;
 };
 
 

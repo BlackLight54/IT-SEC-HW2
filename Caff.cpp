@@ -4,6 +4,7 @@
 
 #include "Caff.h"
 #include "Parser.h"
+#include <jpeglib.h>
 
 CaffBlock * CaffBlock::parseBlock(std::ifstream &file) {
     return Parser::parseCaffBlock(file);
@@ -55,5 +56,7 @@ void CaffAnimation::print(ostream &os) const {
             os << ciff;
         }
 }
+
+
 
 

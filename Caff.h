@@ -144,6 +144,12 @@ public:
 
     void print(ostream &os) const override;
 
+    //getter
+    [[nodiscard]] auto getDuration() const -> const unsigned long & { return duration; }
+
+    [[nodiscard]] auto getCiffs() const -> const vector<Ciff> & { return ciffs; }
+
+
 };
 
 class Caff {
@@ -154,7 +160,6 @@ public:
         while (!file.eof() && file.peek() != EOF) {
             blocks.push_back(CaffBlock::parseBlock(file));
         }
-
     }
 };
 

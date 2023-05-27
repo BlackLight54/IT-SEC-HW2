@@ -2,9 +2,9 @@
 
 CC = gcc
 CXX = g++
-CFLAGS = -std=c++17 -O2 -Wall -Wextra -Werror -g
+CFLAGS = -I/usr/local/include -std=c++17 -O2 -Wall -Wextra -Werror -g
 # CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -Werror -g
-LDFLAGS = # -ljpeg
+LDFLAGS = -L/usr/local/lib -ljpeg
 
 BUILD = ./build
 OBJ_DIR = $(BUILD)/objects
