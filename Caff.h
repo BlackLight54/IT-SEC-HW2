@@ -20,7 +20,7 @@ public:
 
     auto &length() const { return length_; }
 
-    static CaffBlock * parseBlock(std::ifstream &file);
+    static CaffBlock *parseBlock(std::ifstream &file);
 
     virtual void print(ostream &os) const;;
 
@@ -44,9 +44,9 @@ public:
         type_ = 0x1;
         length_ = dataLength;
 
-//        if (magic != "CAFF") { throw runtime_error("Invalid CAFF magic"); }
-//        if (dataLength <= 9) { throw runtime_error("CAFF block length too short"); }
-//        if (headerSize != dataLength) { throw runtime_error("Invalid CAFF header size"); }
+        if (magic_ != "CAFF") { throw runtime_error("Invalid CAFF magic"); }
+        if (dataLength <= 9) { throw runtime_error("CAFF block length too short"); }
+        if (headerSize != dataLength) { throw runtime_error("Invalid CAFF header size"); }
 
 
     }
@@ -103,8 +103,11 @@ public:
         if (day < 1 || day > 31) throw runtime_error("Invalid CAFF day: " + to_string(day) + "");
         if (hour < 0 || hour > 23) throw runtime_error("Invalid CAFF hour: " + to_string(hour) + "");
         if (minute < 0 || minute > 59) throw runtime_error("Invalid CAFF minute: " + to_string(minute) + "");
-        if (creator_length > dataLength - 14) throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + "");
-        if (creator_length != creator_.length()) throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + " != " + to_string(creator_.length()) + "");
+        if (creator_length > dataLength - 14)
+            throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + "");
+        if (creator_length != creator_.length())
+            throw runtime_error("Invalid CAFF creator length: " + to_string(creator_length) + " != " +
+                                to_string(creator_.length()) + "");
     }
 
     auto &year() const { return year_; }
@@ -154,7 +157,7 @@ public:
 
 class Caff {
 public:
-    std::vector<CaffBlock*> blocks;
+    std::vector<CaffBlock *> blocks;
 
     explicit Caff(ifstream &file) {
         while (!file.eof() && file.peek() != EOF) {
