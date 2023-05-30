@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     bool caff = (strcmp(argv[1], "-caff") == 0);
     string relpath = argv[2];
-    string path = std::filesystem::absolute(relpath.substr(2, relpath.size()));
+    string path = std::filesystem::absolute(relpath);
     string jpegPath = path.substr(0, path.size() - 5) + ".jpeg";
 
 
@@ -43,19 +43,11 @@ int main(int argc, char *argv[]) {
         }
     }
     catch (exception &e) {
+        file.close();
         cout << e.what() << endl;
         return -1;
     }
-//    CaffBlock firstBlock = CaffBlock::parseBlock(file);
-//    cout << dynamic_cast<CaffHeader&>(firstBlock);
-//    auto header  = dynamic_cast<CaffHeader&>(firstBlock);
-//    cout << header;
-//    CaffBlock secondBlock = CaffBlock::parseBlock(file);
-//    auto credits  = dynamic_cast<CaffCredits&>(secondBlock);
-//    cout << credits;
 
-//    Caff caffFile(file);
-//    cout << dynamic_cast<CaffHeader&>(caffFile.blocks.at(0));
 
     file.close();
     return 0;
